@@ -4,7 +4,7 @@ CC     = $(HOST)-gcc
 AR     = $(HOST)-ar
 RANLIB = $(HOST)-ranlib
 
-OPTIMIZE = -O2 -fno-common -fomit-frame-pointer
+OPTIMIZE = -Os -fno-common
 INCLUDES = -I./include
 WARNINGS = -Wall -Wwrite-strings -Werror
 CFLAGS = $(OPTIMIZE) $(INCLUDES) $(WARNINGS)
@@ -19,7 +19,7 @@ endif
 
 ifeq ($(HOST),m68k-amigaos)
 	CPU = 68000
-	CFLAGS := -noixemul $(CFLAGS)
+	CFLAGS := -noixemul -fomit-frame-pointer $(CFLAGS)
 else
 	CPU = $(patsubst %-aros,%,$(HOST))
 endif
