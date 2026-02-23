@@ -25,43 +25,17 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef LIBDOS64_H
-#define LIBDOS64_H 1
+#include "libdos64_internal.h"
 
-#ifndef EXEC_TYPES_H
-#include <exec/types.h>
-#endif
-#ifndef DOS_DOS_H
-#include <dos/dos.h>
-#endif
+QUAD GetFilePosition(BPTR file)
+{
+	QUAD position = GetFilePosition64(file);
 
-#if !defined(__AROS__) && !defined(AROS_TYPES_DEFINED)
-#define AROS_TYPES_DEFINED
-typedef ULONG              IPTR;
-typedef LONG               SIPTR;
-typedef unsigned long long UQUAD;
-typedef signed long long   QUAD;
-#endif
+	if (position == -1 && IoErr() == ERROR_ACTION_NOT_KNOWN)
+	{
+		position = (QUAD)Seek(file, 0, OFFSET_CURRENT);
+	}
 
-/*
- * The following functions will fail with IoErr() == ERROR_ACTION_NOT_KNOWN if
- * the corresponding 64-bit packet is unsupported.
- */
-
-LONG ChangeFilePosition64(BPTR file, QUAD offset, LONG mode);
-LONG ChangeFileSize64(BPTR file, QUAD offset, LONG mode);
-QUAD GetFilePosition64(BPTR file);
-QUAD GetFileSize64(BPTR file);
-
-/*
- * The following functions will attempt to fall back on 32-bit AmigaDOS
- * functions if the 64-bit packet is unsupported.
- */
-
-LONG ChangeFilePosition(BPTR file, QUAD offset, LONG mode);
-LONG ChangeFileSize(BPTR file, QUAD offset, LONG mode);
-QUAD GetFilePosition(BPTR file);
-QUAD GetFileSize(BPTR file);
-
-#endif /* LIBDOS64_H */
+	return position;
+}
 

@@ -11,6 +11,7 @@ CFLAGS = $(OPTIMIZE) $(INCLUDES) $(WARNINGS)
 
 SRCS = $(addprefix src/, \
        changefileposition64.c changefilesize64.c getfileposition64.c getfilesize64.c \
+       changefileposition.c changefilesize.c getfileposition.c getfilesize.c \
        dopkt64.c)
 
 ifneq (,$(SYSROOT))
