@@ -36,13 +36,7 @@ QUAD GetFileSize(BPTR file)
 
 	if (size == -1 && IoErr() == ERROR_ACTION_NOT_KNOWN)
 	{
-#ifdef __GNUC__
-		alignas(4) UBYTE buffer[sizeof(struct FileInfoBlock)];
-		struct FileInfoBlock *fib = (struct FileInfoBlock *)buffer;
-#else
-		UBYTE buffer[sizeof(struct FileInfoBlock) + 3];
-		struct FileInfoBlock *fib = (struct FileInfoBlock *)(((IPTR)buffer + 3) & ~3);
-#endif
+		ALIGN4(struct FileInfoBlock, fib);
 
 		if (ExamineFH(file, fib) != DOSFALSE)
 		{
