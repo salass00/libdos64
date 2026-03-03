@@ -51,11 +51,11 @@
 #ifdef __GNUC__
 #define ALIGN4(type,name) \
 	alignas(4) UBYTE name##_buffer[sizeof(type)]; \
-	type *name = (type *)name##_buffer;
+	type *name = (type *)name##_buffer
 #else
 #define ALIGN4(type,name) \
 	UBYTE name##buffer[sizeof(type) + 3]; \
-	type *name = (type *)(((IPTR)name##_buffer + 3) & ~3);
+	type *name = (type *)(((IPTR)name##_buffer + 3) & ~3)
 #endif
 
 QUAD DoPkt64(struct MsgPort *port, LONG errReturn, LONG action, LONG arg1, QUAD arg2, LONG arg3);
